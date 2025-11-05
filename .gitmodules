@@ -1,0 +1,3 @@
+[submodule "src/optimiser"]
+	path = src/optimiser
+	url = https://github.com/mjmilne1/UltraOptimiser.git
