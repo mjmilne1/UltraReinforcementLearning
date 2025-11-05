@@ -1,0 +1,5 @@
+﻿model:
+  learning_rate: 0.0003
+  batch_size: 256
+trading:
+  max_positions: 100
