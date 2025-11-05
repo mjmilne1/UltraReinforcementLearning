@@ -1,4 +1,4 @@
-﻿"""Feature Pipeline - Processes data from Kafka"""
+﻿'''Feature Pipeline - Processes data from Kafka'''
 import numpy as np
 import pandas as pd
 from typing import Dict, List, Optional
@@ -6,27 +6,27 @@ from datetime import datetime, timedelta
 from collections import deque
 import asyncio
 
-from ..schemas.market_data import MarketData, Quote, Trade, OHLCV
+from .schemas.market_data import MarketData, Quote, Trade, OHLCV
 import structlog
 
 logger = structlog.get_logger()
 
 class FeaturePipeline:
-    """Converts raw market data into features for RL agents"""
+    '''Converts raw market data into features for RL agents'''
     
     def __init__(self, window_size: int = 100):
-        """
+        '''
         Initialize feature pipeline
         
         Args:
             window_size: Rolling window for feature calculation
-        """
+        '''
         self.window_size = window_size
         self.data_buffer = {}  # Symbol -> deque of data points
         self.features = {}  # Symbol -> feature vector
         
     def process(self, data: MarketData) -> Optional[np.ndarray]:
-        """
+        '''
         Process market data and generate features
         
         Args:
@@ -34,7 +34,7 @@ class FeaturePipeline:
             
         Returns:
             Feature vector if enough data, None otherwise
-        """
+        '''
         symbol = data.symbol
         
         # Initialize buffer for new symbols
@@ -53,78 +53,7 @@ class FeaturePipeline:
         return None
     
     def _generate_features(self, symbol: str) -> np.ndarray:
-        """Generate feature vector for a symbol"""
-        data = list(self.data_buffer[symbol])
-        
-        features = []
-        
-        # Price features
-        prices = [d.last if hasattr(d, 'last') else d.close 
-                 for d in data if hasattr(d, 'last') or hasattr(d, 'close')]
-        
-        if prices:
-            # Basic statistics
-            features.extend([
-                np.mean(prices),
-                np.std(prices),
-                np.min(prices),# Create feature pipeline that processes consumed data
-@'
-"""Feature Pipeline - Processes data from Kafka"""
-import numpy as np
-import pandas as pd
-from typing import Dict, List, Optional
-from datetime import datetime, timedelta
-from collections import deque
-import asyncio
-
-from ..schemas.market_data import MarketData, Quote, Trade, OHLCV
-import structlog
-
-logger = structlog.get_logger()
-
-class FeaturePipeline:
-    """Converts raw market data into features for RL agents"""
-    
-    def __init__(self, window_size: int = 100):
-        """
-        Initialize feature pipeline
-        
-        Args:
-            window_size: Rolling window for feature calculation
-        """
-        self.window_size = window_size
-        self.data_buffer = {}  # Symbol -> deque of data points
-        self.features = {}  # Symbol -> feature vector
-        
-    def process(self, data: MarketData) -> Optional[np.ndarray]:
-        """
-        Process market data and generate features
-        
-        Args:
-            data: Market data object
-            
-        Returns:
-            Feature vector if enough data, None otherwise
-        """
-        symbol = data.symbol
-        
-        # Initialize buffer for new symbols
-        if symbol not in self.data_buffer:
-            self.data_buffer[symbol] = deque(maxlen=self.window_size)
-        
-        # Add data to buffer
-        self.data_buffer[symbol].append(data)
-        
-        # Generate features if we have enough data
-        if len(self.data_buffer[symbol]) >= self.window_size:
-            features = self._generate_features(symbol)
-            self.features[symbol] = features
-            return features
-        
-        return None
-    
-    def _generate_features(self, symbol: str) -> np.ndarray:
-        """Generate feature vector for a symbol"""
+        '''Generate feature vector for a symbol'''
         data = list(self.data_buffer[symbol])
         
         features = []
@@ -195,7 +124,7 @@ class FeaturePipeline:
         return feature_vector
     
     def _calculate_rsi(self, prices: List[float], period: int = 14) -> float:
-        """Calculate RSI"""
+        '''Calculate RSI'''
         if len(prices) < period + 1:
             return 50.0
         
@@ -220,7 +149,7 @@ class FeaturePipeline:
         period: int = 20, 
         std_dev: float = 2.0
     ) -> tuple:
-        """Calculate Bollinger Bands"""
+        '''Calculate Bollinger Bands'''
         if len(prices) < period:
             return prices[-1], prices[-1]
         
@@ -234,7 +163,7 @@ class FeaturePipeline:
         return upper_band, lower_band
     
     def get_state_vector(self, symbols: List[str]) -> np.ndarray:
-        """
+        '''
         Get combined state vector for multiple symbols
         
         Args:
@@ -242,7 +171,7 @@ class FeaturePipeline:
             
         Returns:
             Combined state vector
-        """
+        '''
         states = []
         
         for symbol in symbols:
@@ -258,66 +187,3 @@ class FeaturePipeline:
         else:
             return np.zeros(256 * len(symbols))
 
-class RealTimeFeatureEngine:
-    """Real-time feature engine that connects Kafka to RL agents"""
-    
-    def __init__(self):
-        self.pipeline = FeaturePipeline()
-        self.consumer = None
-        self.feature_buffer = asyncio.Queue(maxsize=1000)
-        
-    async def start(self):
-        """Start the feature engine"""
-        from ..consumers.market_data_consumer import MarketDataConsumer
-        
-        # Create consumer with custom handler
-        self.consumer = MarketDataConsumer(
-            message_handler=self.process_market_data
-        )
-        
-        # Start consumer in background
-        consumer_task = asyncio.create_task(
-            self.consumer.start_async()
-        )
-        
-        # Start feature processor
-        processor_task = asyncio.create_task(
-            self.process_features()
-        )
-        
-        await asyncio.gather(consumer_task, processor_task)
-    
-    def process_market_data(self, data: MarketData, key: str, topic: str):
-        """Process incoming market data"""
-        # Generate features
-        features = self.pipeline.process(data)
-        
-        if features is not None:
-            # Add to feature buffer
-            try:
-                self.feature_buffer.put_nowait({
-                    'symbol': data.symbol,
-                    'features': features,
-                    'timestamp': data.timestamp
-                })
-            except asyncio.QueueFull:
-                logger.warning("Feature buffer full, dropping data")
-    
-    async def process_features(self):
-        """Process features and feed to RL agents"""
-        while True:
-            try:
-                # Get feature from buffer
-                feature_data = await self.feature_buffer.get()
-                
-                # Here you would feed to your RL agent
-                logger.info(
-                    "Generated features",
-                    symbol=feature_data['symbol'],
-                    feature_dim=len(feature_data['features'])
-                )
-                
-                # TODO: Send to DQN/PPO/A3C agents
-                
-            except Exception as e:
-                logger.error(f"Feature processing error: {e}")

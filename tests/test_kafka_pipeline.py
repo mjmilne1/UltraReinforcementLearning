@@ -1,4 +1,4 @@
-﻿"""Test Kafka Data Ingestion"""
+"""Test Kafka Data Ingestion"""
 import asyncio
 import json
 import random
@@ -9,7 +9,7 @@ import time
 def create_test_producer():
     """Create Kafka producer for testing"""
     config = {
-        'bootstrap.servers': 'localhost:9092',
+        'bootstrap.servers': 'localhost:9093',
         'client.id': 'test-producer'
     }
     return Producer(config)
@@ -94,3 +94,4 @@ if __name__ == "__main__":
         asyncio.run(test_consumer())
     else:
         print("Usage: python test_kafka.py [produce|consume]")
+

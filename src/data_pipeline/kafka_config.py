@@ -1,4 +1,4 @@
-﻿"""Kafka Configuration for Ultra RL Platform"""
+"""Kafka Configuration for Ultra RL Platform"""
 from pydantic import BaseSettings, Field
 from typing import List, Optional
 import os
@@ -8,7 +8,7 @@ class KafkaConfig(BaseSettings):
     
     # Connection settings
     bootstrap_servers: str = Field(
-        default="localhost:9092",
+        default="localhost:9093",
         env="KAFKA_BOOTSTRAP_SERVERS"
     )
     
@@ -113,3 +113,4 @@ class KafkaConfig(BaseSettings):
 
 # Global config instance
 kafka_config = KafkaConfig()
+
