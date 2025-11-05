@@ -1,0 +1,45 @@
+{
+  "cash": 94607.65569999999,
+  "positions": {
+    "MSFT": {
+      "shares": 3,
+      "avg_cost": 514.84433,
+      "last_price": 514.84433
+    },
+    "NVDA": {
+      "shares": 10,
+      "avg_cost": 198.88868999999997,
+      "last_price": 198.88868999999997
+    },
+    "AAPL": {
+      "shares": 7,
+      "avg_cost": 270.41013999999996,
+      "last_price": 270.41013999999996
+    }
+  },
+  "order_history": [
+    {
+      "status": "FILLED",
+      "symbol": "AAPL",
+      "type": "BUY",
+      "quantity": 7,
+      "price": 270.41013999999996,
+      "value": 1892.8709799999997,
+      "commission": 0,
+      "timestamp": "2025-11-06 05:22:41.364904"
+    },
+    {
+      "status": "FILLED",
+      "symbol": "GOOGL",
+      "type": "SELL",
+      "quantity": 7,
+      "price": 282.66704999999996,
+      "value": 1978.6693499999997,
+      "commission": 0,
+      "timestamp": "2025-11-06 05:22:41.370652"
+    }
+  ],
+  "starting_capital": 100000,
+  "peak_value": 100042.03732999999,
+  "last_updated": "2025-11-06 05:22:41.370663"
+}

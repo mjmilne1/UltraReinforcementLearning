@@ -1,0 +1,22 @@
+{
+  "email": {
+    "enabled": false
+  },
+  "discord": {
+    "enabled": false,
+    "webhook_url": ""
+  },
+  "telegram": {
+    "enabled": false
+  },
+  "sms": {
+    "enabled": false
+  },
+  "rules": {
+    "trade_alerts": true,
+    "risk_alerts": true,
+    "error_alerts": true,
+    "daily_summary": true,
+    "throttle_minutes": 5
+  }
+}

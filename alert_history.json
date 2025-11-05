@@ -1,0 +1,32 @@
+[
+  {
+    "timestamp": "2025-11-05T18:06:44.776437",
+    "message": "\ud83d\udcca System initialized successfully",
+    "level": "info",
+    "channels_notified": 0
+  },
+  {
+    "timestamp": "2025-11-05T18:06:45.782113",
+    "message": "\u2705 Test trade executed: BUY 100 AAPL @ $270.50",
+    "level": "success",
+    "channels_notified": 0
+  },
+  {
+    "timestamp": "2025-11-05T18:06:46.793655",
+    "message": "\u26a0\ufe0f Drawdown approaching limit: -8.5%",
+    "level": "warning",
+    "channels_notified": 0
+  },
+  {
+    "timestamp": "2025-11-05T18:06:47.808413",
+    "message": "\ud83d\udea8 Risk limit breached! Immediate action required",
+    "level": "critical",
+    "channels_notified": 0
+  },
+  {
+    "timestamp": "2025-11-05T18:06:48.822226",
+    "message": "Trade Executed:\nSymbol: AAPL\nAction: BUY\nQuantity: 100\nPrice: $270.50\nValue: $27050.00",
+    "level": "success",
+    "channels_notified": 0
+  }
+]

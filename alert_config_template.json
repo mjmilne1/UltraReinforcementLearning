@@ -1,0 +1,39 @@
+﻿{
+  "email": {
+    "enabled": false,
+    "sender_email": "your_email@gmail.com",
+    "sender_password": "your_app_password",
+    "recipient_emails": ["recipient@example.com"],
+    "smtp_server": "smtp.gmail.com",
+    "smtp_port": 587
+  },
+  "discord": {
+    "enabled": true,
+    "webhook_url": "https://discord.com/api/webhooks/YOUR_WEBHOOK_URL"
+  },
+  "telegram": {
+    "enabled": false,
+    "bot_token": "YOUR_BOT_TOKEN",
+    "chat_id": "YOUR_CHAT_ID"
+  },
+  "sms": {
+    "enabled": false,
+    "account_sid": "YOUR_TWILIO_SID",
+    "auth_token": "YOUR_TWILIO_TOKEN",
+    "from_number": "+1234567890",
+    "to_numbers": ["+1234567890"]
+  },
+  "rules": {
+    "trade_alerts": true,
+    "risk_alerts": true,
+    "error_alerts": true,
+    "daily_summary": true,
+    "throttle_minutes": 5
+  },
+  "thresholds": {
+    "max_drawdown": -0.10,
+    "daily_loss_limit": -0.05,
+    "position_size_limit": 0.20,
+    "low_cash_warning": 0.10
+  }
+}
