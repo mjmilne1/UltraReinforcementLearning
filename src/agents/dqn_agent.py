@@ -368,51 +368,5 @@ class DQNAgent:
         }
 
 
-def test_dqn_agent():
-    '''Test the DQN agent'''
-    print('DQN Agent Test')
-    print('=' * 60)
-    
-    # Create agent
-    agent = DQNAgent(
-        state_size=256,
-        action_size=3,
-        use_double_dqn=True,
-        use_dueling=True,
-        use_prioritized=True
-    )
-    
-    print(f'Agent created with:')
-    print(f'  Device: {agent.device}')
-    print(f'  State size: {agent.state_size}')
-    print(f'  Action size: {agent.action_size}')
-    print(f'  Double DQN: {agent.use_double_dqn}')
-    print()
-    
-    # Test action selection
-    state = np.random.randn(256)
-    action = agent.act(state, training=False)
-    print(f'Selected action: {TradingAction.to_string(action)}')
-    
-    # Test memory and learning
-    for i in range(100):
-        state = np.random.randn(256)
-        action = np.random.randint(0, 3)
-        reward = np.random.randn()
-        next_state = np.random.randn(256)
-        done = i == 99
-        
-        agent.remember(state, action, reward, next_state, done)
-    
-    print(f'Memory size: {len(agent.memory)}')
-    
-    # Test learning
-    loss = agent.learn()
-    if loss is not None:
-        print(f'Training loss: {loss:.4f}')
-    
-    print('\n✅ DQN Agent test complete!')
 
-if __name__ == '__main__':
-    import torch.nn.functional as F
-    test_dqn_agent()
+import torch.nn.functional as F
